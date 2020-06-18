@@ -1,6 +1,6 @@
 package it.polito.tdp.seriea.model;
 
-public class Team {
+public class Team implements Comparable<Team>{
 
 	private String team;
 
@@ -67,6 +67,12 @@ public class Team {
 		} else if (!team.equals(other.team))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Team o) {
+		// TODO Auto-generated method stub
+		return this.team.compareTo(o.getTeam());
 	}
 
 }
