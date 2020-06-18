@@ -1,6 +1,7 @@
 package it.polito.tdp.seriea.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ public class Model {
 	private Graph<Team,DefaultWeightedEdge> graph;
 	private SerieADAO dao;
 	private Map<String,Team> idMap;
+	private Simulator sim;
 	
 	public Model() {
 		this.dao = new SerieADAO();
@@ -71,6 +73,26 @@ public class Model {
 		}
 		Collections.sort(l);
 		return l;
+	}
+
+
+	public List<Season> getSeasons() {
+	   
+		return this.dao.listSeasons();
+	}
+
+
+	public void simula(Season scelta) {
+		this.sim = new Simulator();
+		this.sim.init(scelta);
+		this.sim.run();
+		
+	}
+
+
+	public Collection<Team> getTeams() {
+		// TODO Auto-generated method stub
+		return this.sim.teams();
 	}
 
 }

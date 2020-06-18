@@ -1,10 +1,12 @@
 package it.polito.tdp.seriea;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.seriea.model.Model;
+import it.polito.tdp.seriea.model.Season;
 import it.polito.tdp.seriea.model.Team;
 import it.polito.tdp.seriea.model.Vicino;
 import javafx.event.ActionEvent;
@@ -29,7 +31,7 @@ public class FXMLController {
     private ChoiceBox<Team> boxSquadra;
 
     @FXML
-    private ChoiceBox<?> boxStagione;
+    private ChoiceBox<Season> boxStagione;
 
     @FXML
     private Button btnCalcolaConnessioniSquadra;
@@ -65,11 +67,23 @@ public class FXMLController {
     	for(Vicino v : vicini) {
     		this.txtResult.appendText(v.toString()+"\n");
     	}
+    	this.boxStagione.getItems().addAll(this.model.getSeasons());
 
     }
 
     @FXML
     void doSimulaTifosi(ActionEvent event) {
+    	this.txtResult.clear();
+    	Season scelta = this.boxStagione.getValue();
+    	if(scelta == null) {
+    		this.txtResult.setText("scegli una stagione");
+    		return;
+    	}
+    	this.model.simula(scelta);
+    	Collection<Team> lista = this.model.getTeams();
+    	for(Team t : lista) {
+    		this.txtResult.appendText(t.getTeam()+" "+t.getPunti()+" "+t.getNumTifosi()+"\n");
+    	}
 
     }
 

@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import it.polito.tdp.seriea.model.Adiacenza;
+import it.polito.tdp.seriea.model.Match;
 import it.polito.tdp.seriea.model.Season;
 import it.polito.tdp.seriea.model.Team;
 
@@ -87,6 +89,45 @@ public class SerieADAO {
 			
 		}
 		
+	}
+
+	public List<Match> partitePerStagione(Season stagione, Map<String, Team> idMap) {
+		final String sql = "SELECT * " + 
+				"FROM matches AS m " + 
+				"WHERE m.Season=? " + 
+				"ORDER BY m.Date ASC";
+		List<Match> lista = new ArrayList<>();
+		Connection conn = DBConnect.getConnection();
+
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, stagione.getSeason());
+			ResultSet res = st.executeQuery();
+
+			while (res.next()) {
+				int id = res.getInt("match_id");
+			    Season season = stagione;
+				String div = res.getString("Div");
+				LocalDate date = res.getDate("Date").toLocalDate();
+				Team homeTeam = idMap.get(res.getString("HomeTeam"));
+				Team awayTeam = idMap.get(res.getString("AwayTeam"));
+				int fthg = res.getInt("FTHG"); // full time home goals
+				int ftag = res.getInt("FTAG"); // full time away goals
+				String ftr = res.getString("FTR");
+				
+				lista.add(new Match(id,season,div,date,homeTeam,awayTeam,fthg,ftag,ftr));
+			}
+
+			conn.close();
+			return lista;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+			
+		}
+	
 	}
 
 }

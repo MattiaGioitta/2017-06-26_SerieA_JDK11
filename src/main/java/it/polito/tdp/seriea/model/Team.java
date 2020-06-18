@@ -3,10 +3,42 @@ package it.polito.tdp.seriea.model;
 public class Team implements Comparable<Team>{
 
 	private String team;
+	private int numTifosi;
+	private int punti;
 
 	public Team(String team) {
 		super();
 		this.team = team;
+		this.numTifosi = 1000;
+		this.punti = 0;
+	}
+
+	/**
+	 * @return the punti
+	 */
+	public int getPunti() {
+		return punti;
+	}
+
+	/**
+	 * @param punti the punti to set
+	 */
+	public void setPunti(int punti) {
+		this.punti = punti;
+	}
+
+	/**
+	 * @return the numTifosi
+	 */
+	public int getNumTifosi() {
+		return numTifosi;
+	}
+
+	/**
+	 * @param numTifosi the numTifosi to set
+	 */
+	public void setNumTifosi(int numTifosi) {
+		this.numTifosi = numTifosi;
 	}
 
 	/**
@@ -73,6 +105,11 @@ public class Team implements Comparable<Team>{
 	public int compareTo(Team o) {
 		// TODO Auto-generated method stub
 		return this.team.compareTo(o.getTeam());
+	}
+
+	public void increasePunti(int i) {
+		this.punti = this.punti+i;
+		
 	}
 
 }
